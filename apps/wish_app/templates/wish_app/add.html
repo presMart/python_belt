@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Add Item</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+</head>
+<body>
+    <h1>Add Item to Wish List</h1>
+    <form action="/new" method="POST">
+        {% csrf_token %}
+        Item/Product Name: <input type="text" name="name"><br><br>
+        Brief Description: <input type="text" name="desc"><br><br>
+        <input type="submit" value="ADD">
+    </form><br>
+    <a href="/dash">Home</a> |
+    <a href="/logout">logout</a>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

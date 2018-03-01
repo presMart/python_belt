@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+</head>
+<body>
+    <h2>Hello, {{user.name}}!</h2>
+    <a href="/logout">logout</a><br><br>
+    <hr>
+    <h3>Your Wish List:</h3>
+    <table border="1">
+        <tr>
+            <th>Item:</th>
+            <th>Added By:</th>
+            <th>Date Added:</th>
+            <th>Action</th>
+        </tr>
+        {% for w in wanted %}
+        <tr>
+            <td><a href="/dash/info/{{w.id}}">{{w.name}}</a></td>
+            <td>{{w.creator.name}}</td>
+            <td>{{w.created_at.date}}</td>
+            <td><a href="/unwant/{{w.id}}">Remove from my Wishlist</a></td>
+        </tr>    
+        {% endfor %}
+        {% for w in created %}
+        <tr>
+            <td><a href="/dash/info/{{w.id}}">{{w.name}}</a></td>
+            <td>{{w.creator.name}}</td>
+            <td>{{w.created_at.date}}</td>
+            <td><a href="/forget/{{w.id}}">Delete Item</a></td>
+        </tr>  
+        {%endfor%}
+    </table><br>
+    <form action="/add" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="ADD">
+    </form><br>
+    <hr>
+    <h3>Other Users' Wish List Items:</h3>
+    <table border="1">
+        <tr>
+            <th>Item:</th>
+            <th>Added By:</th>
+            <th>Date Added:</th>
+            <th>Action</th>
+        </tr>
+        {% for w in wish %}
+        {% if w not in wanted %}
+        {% if w not in created %}
+        <tr>
+            <td><a href="/dash/info/{{w.id}}">{{w.name}}</a></td>
+            <td>{{w.creator.name}}</td>
+            <td>{{w.created_at.date}}</td>
+            <td><a href="/want/{{w.id}}">Add to my Wishlist</a></td>
+        </tr> 
+        {%endif%}   
+        {%endif%}
+        {% endfor %}
+    </table>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
